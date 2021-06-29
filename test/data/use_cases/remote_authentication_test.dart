@@ -27,32 +27,21 @@ abstract class HttpClient {
   });
 }
 
-// class HttpClientSpy extends Mock implements HttpClient {
-//   // @override
-//   // Future<void> request({required String url, required String method}) async {
-//   //   await Future.delayed(Duration(milliseconds: 1));
-//   // }
-// }
-
 @GenerateMocks([HttpClient])
 void main() {
   /// Triple A (AAA): Arrange - Act - Assert
   ///
-  // late HttpClientSpy httpClient;
-  // late String url;
-  // // SUT = system under test
-  // late RemoteAuthentication sut;
+  late HttpClient httpClient;
+  late String url;
+  // SUT = system under test
+  late RemoteAuthentication sut;
 
   setUp(() {
-    // httpClient = HttpClientSpy();
-    // url = faker.internet.httpUrl();
-    // sut = RemoteAuthentication(httpClient: httpClient, url: url);
+    httpClient = MockHttpClient();
+    url = faker.internet.httpUrl();
+    sut = RemoteAuthentication(httpClient: httpClient, url: url);
   });
   test('Should call HttpClient with correct values', () async {
-    final httpClient = MockHttpClient();
-
-    final url = faker.internet.httpUrl();
-    final sut = RemoteAuthentication(httpClient: httpClient, url: url);
     await sut.auth();
 
     verify(httpClient.request(url: url, method: 'post'));
